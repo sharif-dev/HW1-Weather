@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">آب و هوا</string>
+    <string name="action_setting">تنظیمات</string>
+    <string name="action_location">مکان</string>
+</resources>
