@@ -1,21 +1,7 @@
 <resources>
     <string name="app_name">آب و هوا</string>
-    <string name="action_setting">تنظیمات</string>
     <string name="action_location">مکان</string>
     <string name="title_activity_location">مکان</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">پیام‌‌ها</string>
-    <string name="sync_header">همگام سازی</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">امضای شما</string>
-    <string name="reply_title">پاسخ پیشفرض</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">همگام سازی ایمیل به طور متناوب</string>
-    <string name="attachment_title">دانلود پیوست‌های دریافت شده</string>
-    <string name="attachment_summary_on">دانلود پیوست‌های دریافت شده به طور خودکار</string>
-    <string name="attachment_summary_off">دانلود پیوست های دریافت شده به طور دستی</string>
+    <string name="select_city_hint">انتخاب شهر</string>
 
 </resources>

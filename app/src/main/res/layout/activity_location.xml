@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".LocationActivity">
+
+    <AutoCompleteTextView
+        android:id="@+id/CitySelectTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/select_city_hint"
+        android:completionThreshold="1"
+        android:completionHint="@string/select_city_hint"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
