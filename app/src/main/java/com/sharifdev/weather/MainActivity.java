@@ -13,12 +13,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
     String TAG = "MainActivity";
+    Button weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +38,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.mapbox.com/geocoding/v5/mapbox.places/")
-                .build();
+        weather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.mapbox.com/geocoding/v5/mapbox.places/")
+                        .build();
 
-        Mapbox service = retrofit.create(Mapbox.class);
-        Log.e(TAG, "onCreate: " + service.getWeather("teh", Mapbox.access_token));
+                Mapbox service = retrofit.create(Mapbox.class);
+                Log.e(TAG, "onCreate: " + service.getWeather("teh", Mapbox.access_token));
+            }
+        });
     }
 
     @Override
