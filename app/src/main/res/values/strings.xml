@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Weathero</string>
     <string name="action_settings">Settings</string>
+    <string name="mapbox_url">https://api.mapbox.com/geocoding/v5/mapbox.places/</string>
+    <string name="mapbox_token">pk.eyJ1IjoiYWxpc2hpciIsImEiOiJjazhoN2JheDcwOWZ0M25xa2ZvMXIwYjYxIn0.EYQO0NPwPPyO5zHQG8sl3Q</string>
 </resources>
