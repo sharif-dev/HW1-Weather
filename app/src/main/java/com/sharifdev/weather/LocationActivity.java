@@ -3,46 +3,52 @@ package com.sharifdev.weather;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.ListView;
 
 public class LocationActivity extends AppCompatActivity {
-    String[] options;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        Spinner spinner = findViewById(R.id.CitySelectSpinner);
-        // Creating ArrayAdapter using the string array and default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.cities, android.R.layout.simple_spinner_item);
-        // Specify layout to be used when list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Applying the adapter to our spinner
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        String[] programming_languages = {"Pyhton", "C", "C++", "Java", "C#", "JavaScript",
+                "XML", "HTML5", "Operating Systems", "Android", "Windows",
+                "PHP", "Mongodb", "SQL"};
+
+        ListView listview = findViewById(R.id.listview);
+        EditText Search = findViewById(R.id.input);
+
+        adapter = new ArrayAdapter<>(this, R.layout.item, R.id.item,
+                programming_languages);
+        listview.setAdapter(adapter);
+
+        Search.addTextChangedListener(new TextWatcher() {
+
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onTextChanged(CharSequence cs, int arg1, int arg2,
+                                      int arg3) {
+                // When user changed the Text
+                LocationActivity.this.adapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
 
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
             }
         });
-
-        options = LocationActivity.this.getResources().getStringArray(R.array.cities);
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        Toast.makeText(this, " You select >> " + options[position], Toast.LENGTH_SHORT).show();
-
-    }
 }
