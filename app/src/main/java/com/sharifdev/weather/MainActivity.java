@@ -4,15 +4,21 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.sharifdev.weather.network.Mapbox;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import retrofit2.Retrofit;
+
 public class MainActivity extends AppCompatActivity {
+
+    String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.mapbox.com/geocoding/v5/mapbox.places/")
+                .build();
+
+        Mapbox service = retrofit.create(Mapbox.class);
+        Log.e(TAG, "onCreate: " + service.getWeather("teh", Mapbox.access_token));
     }
 
     @Override
