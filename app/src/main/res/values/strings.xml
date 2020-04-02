@@ -3,4 +3,24 @@
     <string name="action_location">Location</string>
     <string name="title_activity_location">Location</string>
     <string name="select_city_hint">Select city</string>
+    <string name="submit">submit</string>
+    <string-array name="cities">
+        <item>Tehran</item>
+        <item>Mashhad</item>
+        <item>Isfahan</item>
+        <item>Shiraz</item>
+        <item>Tabriz</item>
+        <item>Qom</item>
+        <item>Kermanshah</item>
+        <item>Rasht</item>
+        <item>Ahvaz</item>
+        <item>Hamedan</item>
+        <item>Yazd</item>
+        <item>Ardabil</item>
+        <item>Zahedan</item>
+        <item>Kerman</item>
+        <item>Karaj</item>
+        <item>Qazvin</item>
+        <item>Kashan</item>
+    </string-array>
 </resources>

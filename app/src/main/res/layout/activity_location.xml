@@ -7,12 +7,9 @@
     android:padding="16dp"
     tools:context=".LocationActivity">
 
-    <AutoCompleteTextView
-        android:id="@+id/CitySelectTextView"
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/CitySelectSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/select_city_hint"
-        android:completionThreshold="1"
-        android:completionHint="@string/select_city_hint"/>
+        android:layout_height="wrap_content"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
