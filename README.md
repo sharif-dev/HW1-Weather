@@ -1,13 +1,10 @@
-<div dir="rtl">
+# Weather Application
 
-# پیش‌بینی آب و هوا
+mobile_dev course - Home Work 1 [document](https://github.com/sharif-dev/HW1-Weather/raw/master/Mobile_HW1.pdf)
 
-تمرین اول درس برنامه‌نویسی موبایل [مشاهدهٔ داک](https://github.com/sharif-dev/HW1-Weather/raw/master/Mobile_HW1.pdf)
-
-### اعضای گروه:
-|        نام        | شمارهٔ دانشجویی |
+### Team Members:
+|        Name        | Student Number |
 |:-----------------:|:--------------:|
-|   محمدحسین بهمنی  |    xxxxxxxx    |
-| محمدامین قاسم‌زاده |    xxxxxxxx    |
-|    علی شیرمحمدی   |    97106068    |
-</div>
+|   MohammadHosein Bahmani  |    97105811    |
+| Mohammadamin Ghasemzade |    97110296    |
+|    Ali Shirmohammadi   |    97106068    |
