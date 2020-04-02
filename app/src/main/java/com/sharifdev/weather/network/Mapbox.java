@@ -2,6 +2,7 @@ package com.sharifdev.weather.network;
 
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface Mapbox {
             "pk.eyJ1IjoiYWxpc2hpciIsImEiOiJjazhoN2JheDcwOWZ0M25xa2ZvMXIwYjYxIn0.EYQO0NPwPPyO5zHQG8sl3Q";
 
     @GET("{query}.json")
-    Call<List<JsonArray>> getWeather(@Path("query") String query, @Query("access_token") String token);
+    Call<JsonObject> getWeather(@Path("query") String query, @Query("access_token") String token);
 }

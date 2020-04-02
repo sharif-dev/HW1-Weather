@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.sharifdev.weather.network.Mapbox;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        weather = findViewById(R.id.getWeatherBotton);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -43,10 +54,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://api.mapbox.com/geocoding/v5/mapbox.places/")
+                        .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 Mapbox service = retrofit.create(Mapbox.class);
-                Log.e(TAG, "onCreate: " + service.getWeather("teh", Mapbox.access_token));
+                Call<JsonObject> call = service.getWeather("teh", Mapbox.access_token);
+                call.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        System.out.println(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Log.e(TAG, t.toString());
+                    }
+                });
             }
         });
     }
