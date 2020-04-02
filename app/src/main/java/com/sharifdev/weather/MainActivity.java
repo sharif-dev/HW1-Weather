@@ -3,6 +3,7 @@ package com.sharifdev.weather;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -23,18 +24,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class MainActivity extends AppCompatActivity {
 
     Button mDownloadBtn;
     ProgressBar mProgressBar;
+    TextView mProgressPercent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +59,10 @@ public class MainActivity extends AppCompatActivity {
         PRDownloaderConfig config = PRDownloaderConfig.newBuilder().build();
         PRDownloader.initialize(getApplicationContext(), config);
 
+
         mDownloadBtn = findViewById(R.id.activity_main_download_button);
+        mProgressBar = findViewById(R.id.activity_main_progress_bar);
+        mProgressPercent = findViewById(R.id.activity_main_progress_percent_tv);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,19 +74,27 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        final AtomicReference<DownloadTask> downloadTask = new AtomicReference<>();
+        downloadTask.set(new DownloadTask());
+
         mDownloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String url = "https://irsv.upmusics.com/99/Hamed%20Zamani%20%7C%20Sepidar%20(128).mp3";
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setDescription("Download test");
-                request.setTitle("Download title");
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "download.mp3");
 
-                DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                manager.enqueue(request);
+
+                if (downloadTask.get().getStatus() == AsyncTask.Status.RUNNING) {
+                    downloadTask.get().cancel(true);
+                    mDownloadBtn.setText(R.string.start_download);
+                } else {
+                    try {
+                        downloadTask.getAndSet(new DownloadTask());
+                        downloadTask.get().execute(new URL(url));
+                        mDownloadBtn.setText(R.string.end_download);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -100,5 +123,96 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    private class DownloadTask extends AsyncTask<URL, Integer, String> {
+
+        private String downloadPath = MainActivity.this.getApplicationInfo().dataDir ;
+        String TAG = "Download Task";
+        File outputFile;
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            try {
+                HttpURLConnection connection = (HttpURLConnection) urls[0].openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
+                    Log.e(TAG, "HTTP connection returned " + connection.getResponseCode() +
+                            " " + connection.getResponseMessage());
+                outputFile = new File(downloadPath, "download.mp3");
+
+                if (!outputFile.exists()) {
+                    outputFile.createNewFile();
+                    Log.d(TAG, "File Created in " + downloadPath);
+                }
+                Log.e(TAG, downloadPath);
+
+                InputStream is =  connection.getInputStream();
+                FileOutputStream fos = new FileOutputStream(outputFile);
+
+                byte[] buffer = new byte[1024];
+
+                int len = 0;
+                long total = 0;
+                while ((len = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                    total += len;
+                    if (isCancelled()) {
+                        Log.e(TAG, "download canceled");
+                        connection.disconnect();
+                        fos.close();
+                        is.close();
+                        return downloadPath;
+                    }
+                    Log.i(TAG, String.valueOf((int) (100 * total / connection.getContentLength())));
+                    publishProgress((int) (100 * total / connection.getContentLength()));
+                }
+
+                fos.close();
+                is.close();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                outputFile = null;
+                Log.e(TAG, "Download Error Exception " + e.getMessage());
+            }
+            return downloadPath;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getApplicationContext(), "File downloaded at " + downloadPath, Toast.LENGTH_SHORT).show();
+            super.onPostExecute(s);
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mProgressPercent.setVisibility(View.INVISIBLE);
+            mDownloadBtn.setText(getString(R.string.start_download));
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            mProgressBar.setProgress(values[0]);
+            mProgressPercent.setText(values[0] + "%");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressPercent.setVisibility(View.VISIBLE);
+            mProgressBar.setProgress(0);
+            mProgressPercent.setText("0%");
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mProgressPercent.setVisibility(View.INVISIBLE);
+            super.onCancelled();
+        }
     }
 }
