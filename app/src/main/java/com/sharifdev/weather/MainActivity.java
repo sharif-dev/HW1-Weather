@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sharifdev.weather.network.Mapbox;
 
