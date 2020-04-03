@@ -5,7 +5,10 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
+import com.sharifdev.weather.models.CitiesResponse;
+import com.sharifdev.weather.models.City;
 import com.sharifdev.weather.network.Mapbox;
+import com.sharifdev.weather.network.RetrofitClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -51,21 +54,22 @@ public class MainActivity extends AppCompatActivity {
         weather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://api.mapbox.com/geocoding/v5/mapbox.places/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                RetrofitClient mapboxClient = new RetrofitClient(getString(R.string.mapbox_url));
 
-                Mapbox service = retrofit.create(Mapbox.class);
-                Call<JsonObject> call = service.getWeather("teh", Mapbox.access_token);
-                call.enqueue(new Callback<JsonObject>() {
+                Mapbox service = mapboxClient.getRetrofit().create(Mapbox.class);
+                Call<CitiesResponse> call = service.getWeather("teh", getString(R.string.mapbox_token));
+                call.enqueue(new Callback<CitiesResponse>() {
                     @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        System.out.println(response.body());
+                    public void onResponse(Call<CitiesResponse> call, Response<CitiesResponse> response) {
+                        List<City> cities = response.body().getCities();
+                        for (City city: cities) {
+                            System.out.print(city.getName() + "  ");
+                            System.out.println(city.getCoordinates());
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                    public void onFailure(Call<CitiesResponse> call, Throwable t) {
                         Log.e(TAG, t.toString());
                     }
                 });
