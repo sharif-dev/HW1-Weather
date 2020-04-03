@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import java.util.List;
 
 public class CityAdapter extends BaseAdapter {
@@ -42,7 +40,7 @@ public class CityAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.city_item, parent, false);
         }
 
         String currentItem = getItem(position);

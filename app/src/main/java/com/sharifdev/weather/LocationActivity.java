@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -26,7 +25,7 @@ public class LocationActivity extends AppCompatActivity {
         Collections.addAll(citiesList, cities);
 
         ListView listview = findViewById(R.id.listview);
-        EditText Search = findViewById(R.id.input);
+        EditText Search = findViewById(R.id.text_city_search);
 
         adapter = new CityAdapter(this, citiesList);
         listview.setAdapter(adapter);
