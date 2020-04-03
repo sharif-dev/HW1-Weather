@@ -4,6 +4,7 @@
     <string name="title_activity_location">Location</string>
     <string name="select_city_hint">Select city</string>
     <string name="submit">submit</string>
+    <string name="menu_refresh">refresh</string>
     <string-array name="cities">
         <item>Tehran</item>
         <item>Mashhad</item>

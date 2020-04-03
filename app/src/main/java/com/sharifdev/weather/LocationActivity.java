@@ -24,7 +24,7 @@ public class LocationActivity extends AppCompatActivity {
         ListView listview = findViewById(R.id.listview);
         EditText Search = findViewById(R.id.input);
 
-        adapter = new ArrayAdapter<>(this, R.layout.item, R.id.item,
+        adapter = new ArrayAdapter<>(this, R.layout.item, R.id.city_name,
                 programming_languages);
         listview.setAdapter(adapter);
 
