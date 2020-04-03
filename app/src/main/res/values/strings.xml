@@ -5,6 +5,8 @@
     <string name="select_city_hint">Select city</string>
     <string name="submit">submit</string>
     <string name="menu_refresh">refresh</string>
+    <string name="mapbox_url">https://api.mapbox.com/geocoding/v5/mapbox.places/</string>
+    <string name="mapbox_token">pk.eyJ1IjoiYWxpc2hpciIsImEiOiJjazhoN2JheDcwOWZ0M25xa2ZvMXIwYjYxIn0.EYQO0NPwPPyO5zHQG8sl3Q</string>
     <string-array name="cities">
         <item>Tehran</item>
         <item>Mashhad</item>
@@ -23,5 +25,6 @@
         <item>Karaj</item>
         <item>Qazvin</item>
         <item>Kashan</item>
+
     </string-array>
 </resources>
