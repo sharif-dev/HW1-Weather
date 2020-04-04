@@ -25,8 +25,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button weather;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,39 +33,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        weather = findViewById(R.id.getWeatherBotton);
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LocationActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        weather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RetrofitClient mapboxClient = new RetrofitClient(getString(R.string.mapbox_url));
-
-                Mapbox service = mapboxClient.getRetrofit().create(Mapbox.class);
-                Call<CitiesResponse> call = service.getWeather("teh", getString(R.string.mapbox_token));
-                call.enqueue(new Callback<CitiesResponse>() {
-                    @Override
-                    public void onResponse(Call<CitiesResponse> call, Response<CitiesResponse> response) {
-                        List<City> cities = response.body().getCities();
-                        for (City city: cities) {
-                            System.out.print(city.getName() + "  ");
-                            System.out.println(city.getCoordinates());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<CitiesResponse> call, Throwable t) {
-                        System.err.println(t.getMessage());
-                    }
-                });
             }
         });
     }
