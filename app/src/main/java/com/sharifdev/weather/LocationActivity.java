@@ -1,12 +1,12 @@
 package com.sharifdev.weather;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.sharifdev.weather.models.CitiesResponse;
 import com.sharifdev.weather.models.City;
@@ -14,7 +14,6 @@ import com.sharifdev.weather.network.Mapbox;
 import com.sharifdev.weather.network.RetrofitClient;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,9 +28,7 @@ public class LocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        String[] cities = {"City1", "City2", "City3", "City4", "City5", "City6", "City7", "City8", "City9", "City10", "City11"};
-        List<String> citiesList = new ArrayList<>();
-        Collections.addAll(citiesList, cities);
+        List<City> citiesList = new ArrayList<>();
 
         ListView listview = findViewById(R.id.listview);
         EditText Search = findViewById(R.id.text_city_search);
@@ -59,6 +56,9 @@ public class LocationActivity extends AppCompatActivity {
                                 System.out.print(city.getName() + "  ");
                                 System.out.println(city.getCoordinates());
                             }
+                            adapter.setCities(citiesList);
+                            adapter.notifyDataSetChanged();
+
                         }
 
                         @Override
@@ -66,15 +66,7 @@ public class LocationActivity extends AppCompatActivity {
                             System.err.println(t.getMessage());
                         }
                     });
-
-                    cities = new String[]{"City1", "City2", "City3", "City4", "City5", "City6"};
-                } else {
-                    cities = new String[]{"City1", "City2", "City3", "City4", "City5", "City6", "City7", "City8", "City9", "City10", "City11"};
                 }
-                List<String> citiesList = new ArrayList<>();
-                Collections.addAll(citiesList, cities);
-                adapter.setCities(citiesList);
-                adapter.notifyDataSetChanged();
             }
 
             @Override

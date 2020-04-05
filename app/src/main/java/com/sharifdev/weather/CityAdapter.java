@@ -7,18 +7,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.sharifdev.weather.models.City;
+
 import java.util.List;
 
 public class CityAdapter extends BaseAdapter {
     private Context context;
-    private List<String> cities;
+    private List<City> cities;
 
-    public CityAdapter(Context context, List<String> cities) {
+    public CityAdapter(Context context, List<City> cities) {
         this.context = context;
         this.cities = cities;
     }
 
-    public void setCities(List<String> cities) {
+    public void setCities(List<City> cities) {
         this.cities = cities;
     }
 
@@ -28,7 +30,7 @@ public class CityAdapter extends BaseAdapter {
     }
 
     @Override
-    public String getItem(int position) {
+    public City getItem(int position) {
         return cities.get(position);
     }
 
@@ -43,15 +45,17 @@ public class CityAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.city_item, parent, false);
         }
 
-        String currentItem = getItem(position);
+        City currentItem = getItem(position);
 
         TextView cityNameTextView = convertView.findViewById(R.id.city_name);
         TextView ProvinceNameTextView = convertView.findViewById(R.id.province_name);
         TextView CountryNameTextView = convertView.findViewById(R.id.country_name);
 
-        cityNameTextView.setText(currentItem);
-        ProvinceNameTextView.setText(currentItem + " province");
-        CountryNameTextView.setText(currentItem + " country");
+        String[] data = currentItem.getName().split(",\\s+");
+
+        cityNameTextView.setText(data[0]);
+        ProvinceNameTextView.setText(data.length > 1 ? data[1] : "");
+        CountryNameTextView.setText(data.length > 2 ? data[2] : "");
 
         return convertView;
     }
