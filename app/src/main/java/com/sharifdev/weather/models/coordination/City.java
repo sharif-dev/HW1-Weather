@@ -1,4 +1,4 @@
-package com.sharifdev.weather.models;
+package com.sharifdev.weather.models.coordination;
 
 import com.google.gson.annotations.SerializedName;
 

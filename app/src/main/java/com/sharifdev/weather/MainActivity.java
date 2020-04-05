@@ -5,22 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sharifdev.weather.models.CitiesResponse;
-import com.sharifdev.weather.models.City;
-import com.sharifdev.weather.network.Mapbox;
-import com.sharifdev.weather.network.RetrofitClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-
-import android.widget.Button;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {

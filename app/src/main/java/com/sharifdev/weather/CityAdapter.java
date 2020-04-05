@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.sharifdev.weather.models.City;
+import com.sharifdev.weather.models.coordination.City;
 
 import java.util.List;
 
