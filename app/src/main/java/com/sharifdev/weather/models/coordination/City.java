@@ -2,6 +2,7 @@ package com.sharifdev.weather.models.coordination;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
 import java.util.List;
 
 public class City {
@@ -35,9 +36,5 @@ public class City {
 
     public List<Double> getCoordinates() {
         return coordinates;
-    }
-
-    public void setCoordinates(List<Double> coordinates) {
-        this.coordinates = coordinates;
     }
 }
