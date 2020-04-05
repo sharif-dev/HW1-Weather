@@ -94,8 +94,8 @@ public class LocationActivity extends AppCompatActivity {
                 TextView longitude = findViewById(R.id.city_text_longitude);
 
                 currentCity.setText(clickedCity.getRealName());
-                latitude.setText(String.format("Latitude: %f, ", clickedCity.getCoordinates().get(0)));
-                longitude.setText(String.format("Longitude: %f, ", clickedCity.getCoordinates().get(1)));
+                latitude.setText(String.format("Latitude: %f, ", clickedCity.getCoordinates().get(1)));
+                longitude.setText(String.format("Longitude: %f, ", clickedCity.getCoordinates().get(0)));
 
                 // TODO: Save selected City
             }
