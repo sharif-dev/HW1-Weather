@@ -23,4 +23,5 @@
         <item>کرج</item>
     </string-array>
     <string name="submit">ثبت</string>
+    <string name="menu_refresh">تازه سازی</string>
 </resources>
