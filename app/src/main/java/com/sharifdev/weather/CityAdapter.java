@@ -51,11 +51,10 @@ public class CityAdapter extends BaseAdapter {
         TextView ProvinceNameTextView = convertView.findViewById(R.id.province_name);
         TextView CountryNameTextView = convertView.findViewById(R.id.country_name);
 
-        String[] data = currentItem.getName().split(",\\s+");
 
-        cityNameTextView.setText(data[0]);
-        ProvinceNameTextView.setText(data.length > 1 ? data[1] : "");
-        CountryNameTextView.setText(data.length > 2 ? data[2] : "");
+        cityNameTextView.setText(currentItem.getRealName());
+        ProvinceNameTextView.setText(currentItem.getProvince());
+        CountryNameTextView.setText(currentItem.getCountry());
 
         return convertView;
     }

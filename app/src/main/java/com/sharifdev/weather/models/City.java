@@ -14,6 +14,21 @@ public class City {
         return name;
     }
 
+    public String getRealName() {
+        String[] data = this.getName().split(",\\s+");
+        return data[0];
+    }
+
+    public String getProvince() {
+        String[] data = this.getName().split(",\\s+");
+        return data.length > 1 ? data[1] : "";
+    }
+
+    public String getCountry() {
+        String[] data = this.getName().split(",\\s+");
+        return data.length > 2 ? data[2] : "";
+    }
+
     public void setName(String name) {
         this.name = name;
     }

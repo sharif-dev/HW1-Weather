@@ -3,8 +3,11 @@ package com.sharifdev.weather;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +33,7 @@ public class LocationActivity extends AppCompatActivity {
 
         List<City> citiesList = new ArrayList<>();
 
-        ListView listview = findViewById(R.id.listview);
+        final ListView listview = findViewById(R.id.listview);
         EditText Search = findViewById(R.id.text_city_search);
 
         adapter = new CityAdapter(this, citiesList);
@@ -78,6 +81,23 @@ public class LocationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
+            }
+        });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                City clickedCity = (City) listview.getAdapter().getItem(position);
+
+                TextView currentCity = findViewById(R.id.text_current_location);
+                TextView latitude = findViewById(R.id.city_text_latitude);
+                TextView longitude = findViewById(R.id.city_text_longitude);
+
+                currentCity.setText(clickedCity.getRealName());
+                latitude.setText(String.format("Latitude: %f, ", clickedCity.getCoordinates().get(0)));
+                longitude.setText(String.format("Longitude: %f, ", clickedCity.getCoordinates().get(1)));
+
+                // TODO: Save selected City
             }
         });
     }
