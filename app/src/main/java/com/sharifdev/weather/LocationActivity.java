@@ -1,5 +1,6 @@
 package com.sharifdev.weather;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.telephony.mbms.MbmsErrors;
 import android.text.Editable;
@@ -91,6 +92,7 @@ public class LocationActivity extends AppCompatActivity {
         });
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 City clickedCity = (City) listview.getAdapter().getItem(position);
