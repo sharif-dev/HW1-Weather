@@ -1,10 +1,8 @@
 package com.sharifdev.weather;
 
 import android.os.Bundle;
-import android.telephony.mbms.MbmsErrors;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -15,15 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sharifdev.weather.models.coordination.CitiesResponse;
 import com.sharifdev.weather.models.coordination.City;
-import com.sharifdev.weather.models.weather.WeatherResponse;
 import com.sharifdev.weather.network.Mapbox;
 import com.sharifdev.weather.network.RetrofitClient;
-import com.sharifdev.weather.network.WeatherAPI;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,30 +97,6 @@ public class LocationActivity extends AppCompatActivity {
                 latitude.setText(String.format("Latitude: %f, ", clickedCity.getCoordinates().get(1)));
                 longitude.setText(String.format("Longitude: %f, ", clickedCity.getCoordinates().get(0)));
 
-
-                final RetrofitClient weatherClient = new RetrofitClient(getString(R.string.weather_api));
-                final WeatherAPI service = weatherClient.getRetrofit().create(WeatherAPI.class);
-
-                List<Double> coordinates = clickedCity.getCoordinates();
-                Collections.reverse(coordinates);
-                Call<WeatherResponse> call = service.getWeather(
-                        coordinates,
-                        getString(R.string.weather_token));
-
-                call.enqueue(new Callback<WeatherResponse>() {
-                    @Override
-                    public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-                        WeatherResponse weatherResponse = response.body();
-                        System.out.print(weatherResponse.getLocation().getName() + "  ");
-                        System.out.println(weatherResponse.getCurrentSummeryWeather().getTemperature());
-                        System.out.println(weatherResponse.getCurrentSummeryWeather().getCondition());
-                    }
-
-                    @Override
-                    public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                        Log.e("weather", Objects.requireNonNull(t.getMessage()));
-                    }
-                });
 
                 // TODO: Save selected City
             }
