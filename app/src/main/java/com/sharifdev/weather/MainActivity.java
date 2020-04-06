@@ -3,14 +3,20 @@ package com.sharifdev.weather;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity {
+    Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +34,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        TextView dateText = findViewById(R.id.text_date);
+        Date now = calendar.getTime();
+        String pattern = "EEE, MMM d HH:mm";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(now);
+
+        dateText.setText(date);
+
     }
 }
