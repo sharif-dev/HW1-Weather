@@ -1,14 +1,10 @@
 package com.sharifdev.weather;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +13,10 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sharifdev.weather.datamodels.WeatherData;
 import com.sharifdev.weather.datamodels.WeatherDataCallback;
+import com.sharifdev.weather.datamodels.WeatherIconTask;
 import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
                         float temperature = data.getCurrentSummeryWeather().getTemperature();
                         temperatureText.setText(String.format("%.1f°", temperature));
 
-                        DownloadImageTask downloadImageTask = new DownloadImageTask(conditionIcon);
+                        WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
                         String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
-                        downloadImageTask.execute(iconUrl);
+                        iconTask.execute(iconUrl);
                     }
 
                     @Override
@@ -98,34 +94,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", Objects.requireNonNull(e.getMessage()));
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            final float scale = getResources().getDisplayMetrics().density;
-            int dpWidthInPx = (int) (64 * scale);
-            int dpHeightInPx = (int) (64 * scale);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-            bmImage.setLayoutParams(layoutParams);
-        }
-    }
 
 }
