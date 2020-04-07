@@ -22,6 +22,7 @@ import com.sharifdev.weather.models.weather.WeatherResponse;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -59,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
         CityData.getInstance().getCity(new CityDataCallback() {
             @Override
-            public void onComplete(City data) {
+            public void onComplete(List<City> cities) {
                 WeatherData.getInstance().getWeatherData(
-                        data,
+                        cities.get(0),
                         getString(R.string.weather_api),
                         getString(R.string.weather_token),
                         new WeatherDataCallback() {

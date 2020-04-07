@@ -3,6 +3,7 @@ package com.sharifdev.weather.datamodels;
 import com.sharifdev.weather.models.coordination.City;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CityData {
     private static CityData instance = new CityData();
@@ -23,7 +24,7 @@ public class CityData {
     public void getCity(CityDataCallback callback) {
         // TODO: load city data in another Thread.
 
-        callback.onComplete(defaultCity);
+        callback.onComplete(Collections.singletonList(defaultCity));
     }
 
 }
