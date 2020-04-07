@@ -1,9 +1,20 @@
 package com.sharifdev.weather.datamodels;
 
+import android.util.Log;
+
 import com.sharifdev.weather.models.coordination.City;
+import com.sharifdev.weather.models.weather.WeatherResponse;
+import com.sharifdev.weather.network.RetrofitClient;
+import com.sharifdev.weather.network.WeatherAPI;
+
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WeatherData {
-    private static WeatherData instance;
+    private static WeatherData instance = new WeatherData();
 
     private WeatherData() {
     }
@@ -12,7 +23,28 @@ public class WeatherData {
         return instance;
     }
 
-    public void getWeatherData(City city, WeatherDataCallback callback) {
+    public void getWeatherData(City city, String weatherAPI, String apiToken, final WeatherDataCallback callback) {
+        // TODO: refactor       @mhbahmani
+        // TODO: read from file in another thread if exists
+
+        final RetrofitClient weatherClient = new RetrofitClient(weatherAPI);
+        final WeatherAPI service = weatherClient.getRetrofit().create(WeatherAPI.class);
+
+        Call<WeatherResponse> call = service.getWeather(
+                city.getCoordinates(),
+                apiToken);
+
+        call.enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                callback.onComplete(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                Log.e("weather", Objects.requireNonNull(t.getMessage()));
+            }
+        });
 
     }
 }
