@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
                 WeatherResponse weatherResponse = response.body();
+                System.out.println(response);
+//                temperatureText.setText("");
                 float temperature = weatherResponse.getCurrentSummeryWeather().getTemperature();
                 temperatureText.setText(String.format("%.1f°", temperature));
             }
