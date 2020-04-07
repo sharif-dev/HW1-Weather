@@ -34,6 +34,12 @@ public class CityData {
         callback.onComplete(Collections.singletonList(defaultCity));
     }
 
+    public void setCity(City city, CityDataCallback callback) {
+        // TODO: save city in file in another Thread.
+
+        callback.onComplete(Collections.singletonList(city));
+    }
+
     public void searchCities(String query, String api, String token, final CityDataCallback callback) {
         RetrofitClient mapboxClient = new RetrofitClient(api);
         final Mapbox service = mapboxClient.getRetrofit().create(Mapbox.class);

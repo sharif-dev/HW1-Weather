@@ -23,6 +23,9 @@ public class LocationActivity extends AppCompatActivity {
     private CityAdapter adapter;
     ListView searchResultListView;
     EditText citySearchText;
+    TextView currentCity;
+    TextView longitude;
+    TextView latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +34,28 @@ public class LocationActivity extends AppCompatActivity {
 
         searchResultListView = findViewById(R.id.listview);
         citySearchText = findViewById(R.id.text_city_search);
+        currentCity = findViewById(R.id.text_current_location);
+        latitude = findViewById(R.id.city_text_latitude);
+        longitude = findViewById(R.id.city_text_longitude);
 
         adapter = new CityAdapter(this, Collections.<City>emptyList());
         searchResultListView.setAdapter(adapter);
+
+        CityData.getInstance().getCity(new CityDataCallback() {
+            @Override
+            public void onComplete(List<City> cities) {
+                City city = cities.get(0);
+
+                currentCity.setText(city.getRealName());
+                latitude.setText(String.format("Latitude: %.2f, ", city.getCoordinates().get(1)));
+                longitude.setText(String.format("Longitude: %.2f, ", city.getCoordinates().get(0)));
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
         citySearchText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -78,16 +100,21 @@ public class LocationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 City clickedCity = (City) searchResultListView.getAdapter().getItem(position);
 
-                TextView currentCity = findViewById(R.id.text_current_location);
-                TextView latitude = findViewById(R.id.city_text_latitude);
-                TextView longitude = findViewById(R.id.city_text_longitude);
+                CityData.getInstance().setCity(clickedCity, new CityDataCallback() {
+                    @Override
+                    public void onComplete(List<City> cities) {
+                        City savedCity = cities.get(0);
 
-                currentCity.setText(clickedCity.getRealName());
-                latitude.setText(String.format("Latitude: %f, ", clickedCity.getCoordinates().get(1)));
-                longitude.setText(String.format("Longitude: %f, ", clickedCity.getCoordinates().get(0)));
+                        currentCity.setText(savedCity.getRealName());
+                        latitude.setText(String.format("Latitude: %.2f, ", savedCity.getCoordinates().get(1)));
+                        longitude.setText(String.format("Longitude: %.2f, ", savedCity.getCoordinates().get(0)));
+                    }
 
+                    @Override
+                    public void onFailure(Throwable t) {
 
-                // TODO: Save selected City
+                    }
+                });
             }
         });
     }
