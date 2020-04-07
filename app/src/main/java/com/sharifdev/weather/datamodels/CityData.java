@@ -48,13 +48,6 @@ public class CityData {
         call.enqueue(new Callback<CitiesResponse>() {
             @Override
             public void onResponse(Call<CitiesResponse> call, Response<CitiesResponse> response) {
-//                List<City> citiesList = response.body().getCities();
-//                for (City city : citiesList) {
-//                    System.out.print(city.getName() + "  ");
-//                    System.out.println(city.getCoordinates());
-//                }
-//                adapter.setCities(citiesList);
-//                adapter.notifyDataSetChanged();
                 callback.onComplete(response.body().getCities());
             }
 
