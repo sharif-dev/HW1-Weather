@@ -15,22 +15,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sharifdev.weather.datamodels.WeatherData;
+import com.sharifdev.weather.datamodels.WeatherDataCallback;
+import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
-import com.sharifdev.weather.network.RetrofitClient;
-import com.sharifdev.weather.network.WeatherAPI;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -70,35 +66,36 @@ public class MainActivity extends AppCompatActivity {
         dateText.setText(date);
 
 
-        final RetrofitClient weatherClient = new RetrofitClient(getString(R.string.weather_api));
-        final WeatherAPI service = weatherClient.getRetrofit().create(WeatherAPI.class);
-
         List<Double> coordinates = new ArrayList<>();
         coordinates.add(longitude);
         coordinates.add(latitude);
 
-        Collections.reverse(coordinates);
-        Call<WeatherResponse> call = service.getWeather(
-                coordinates,
-                getString(R.string.weather_token));
+        City city = new City();
+        city.setName("Tehran");
+        city.setCoordinates(coordinates);
 
-        call.enqueue(new Callback<WeatherResponse>() {
-            @Override
-            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-                WeatherResponse weatherResponse = response.body();
+        WeatherData.getInstance().getWeatherData(
+                city,
+                getString(R.string.weather_api),
+                getString(R.string.weather_token),
+                new WeatherDataCallback() {
+                    @Override
+                    public void onComplete(WeatherResponse data) {
+                        float temperature = data.getCurrentSummeryWeather().getTemperature();
+                        temperatureText.setText(String.format("%.1f°", temperature));
 
-                float temperature = weatherResponse.getCurrentSummeryWeather().getTemperature();
-                temperatureText.setText(String.format("%.1f°", temperature));
+                        DownloadImageTask downloadImageTask = new DownloadImageTask(conditionIcon);
+                        String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
+                        downloadImageTask.execute(iconUrl);
+                    }
 
-                DownloadImageTask downloadImageTask = new DownloadImageTask(conditionIcon);
-                downloadImageTask.execute("http:" + weatherResponse.getCurrentSummeryWeather().getCondition().getConditionIconLink());
-            }
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.e("weather", Objects.requireNonNull(t.getMessage()));
+                    }
+                }
+        );
 
-            @Override
-            public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                Log.e("weather", Objects.requireNonNull(t.getMessage()));
-            }
-        });
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

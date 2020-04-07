@@ -1,13 +1,11 @@
 package com.sharifdev.weather.datamodels;
 
-import android.util.Log;
-
 import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 import com.sharifdev.weather.network.RetrofitClient;
 import com.sharifdev.weather.network.WeatherAPI;
 
-import java.util.Objects;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,9 +40,12 @@ public class WeatherData {
 
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                Log.e("weather", Objects.requireNonNull(t.getMessage()));
+                callback.onFailure(t);
             }
         });
 
+        ArrayList<City> cities = new ArrayList<>();
+
     }
+
 }
