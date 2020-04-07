@@ -1,9 +1,16 @@
 package com.sharifdev.weather.datamodels;
 
+import com.sharifdev.weather.models.coordination.CitiesResponse;
 import com.sharifdev.weather.models.coordination.City;
+import com.sharifdev.weather.network.Mapbox;
+import com.sharifdev.weather.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CityData {
     private static CityData instance = new CityData();
@@ -22,9 +29,35 @@ public class CityData {
     }
 
     public void getCity(CityDataCallback callback) {
-        // TODO: load city data in another Thread.
+        // TODO: load city from file data in another Thread.
 
         callback.onComplete(Collections.singletonList(defaultCity));
+    }
+
+    public void searchCities(String query, String api, String token, final CityDataCallback callback) {
+        RetrofitClient mapboxClient = new RetrofitClient(api);
+        final Mapbox service = mapboxClient.getRetrofit().create(Mapbox.class);
+
+        Call<CitiesResponse> call = service.getCities(query, token);
+        call.enqueue(new Callback<CitiesResponse>() {
+            @Override
+            public void onResponse(Call<CitiesResponse> call, Response<CitiesResponse> response) {
+//                List<City> citiesList = response.body().getCities();
+//                for (City city : citiesList) {
+//                    System.out.print(city.getName() + "  ");
+//                    System.out.println(city.getCoordinates());
+//                }
+//                adapter.setCities(citiesList);
+//                adapter.notifyDataSetChanged();
+                callback.onComplete(response.body().getCities());
+            }
+
+            @Override
+            public void onFailure(Call<CitiesResponse> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+
     }
 
 }
