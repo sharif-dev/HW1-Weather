@@ -1,4 +1,4 @@
-package com.sharifdev.weather.models;
+package com.sharifdev.weather.models.coordination;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -19,6 +19,10 @@ public class City {
         return data[0];
     }
 
+    public void setCoordinates(List<Double> coordinates) {
+        this.coordinates = coordinates;
+    }
+
     public String getProvince() {
         String[] data = this.getName().split(",\\s+");
         return data.length > 1 ? data[1] : "";
@@ -35,9 +39,5 @@ public class City {
 
     public List<Double> getCoordinates() {
         return coordinates;
-    }
-
-    public void setCoordinates(List<Double> coordinates) {
-        this.coordinates = coordinates;
     }
 }

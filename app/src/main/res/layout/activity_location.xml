@@ -71,6 +71,7 @@
     <ListView
         android:id="@+id/listview"
         android:layout_width="fill_parent"
+        android:animateLayoutChanges="true"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
