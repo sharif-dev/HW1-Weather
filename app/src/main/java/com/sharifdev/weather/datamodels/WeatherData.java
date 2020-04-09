@@ -2,9 +2,11 @@ package com.sharifdev.weather.datamodels;
 
 import android.content.Context;
 
+import com.sharifdev.weather.asynctasks.LoadWeatherTask;
 import com.sharifdev.weather.asynctasks.SaveWeatherTask;
 import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
+import com.sharifdev.weather.network.InternetConnectionChecker;
 import com.sharifdev.weather.network.RetrofitClient;
 import com.sharifdev.weather.network.WeatherAPI;
 
@@ -23,13 +25,13 @@ public class WeatherData {
     private WeatherData() {
     }
 
-    public static WeatherData getInstance() {
+    public static WeatherData getInstance(Context context) {
+        instance.context = context;
         return instance;
     }
 
     public void getWeatherData(City city, String weatherAPI, String apiToken, final WeatherDataCallback callback) {
-        // TODO: refactor       @mhbahmani
-        // TODO: read from file in another thread if exists
+        boolean internetConnection = InternetConnectionChecker.checkConnection(context);
 
         final RetrofitClient weatherClient = new RetrofitClient(weatherAPI);
         final WeatherAPI service = weatherClient.getRetrofit().create(WeatherAPI.class);
@@ -49,15 +51,18 @@ public class WeatherData {
                 callback.onFailure(t);
             }
         });
-
         ArrayList<City> cities = new ArrayList<>();
     }
 
-    public void saveWeatherData(WeatherResponse weather) {
+    public void loadWeather(WeatherDataCallback callback) {
+        LoadWeatherTask loadWeatherTask = new LoadWeatherTask(this.context, callback);
+        loadWeatherTask.execute();
+    }
+
+    public void saveWeather(WeatherResponse weather) {
         final AtomicReference<SaveWeatherTask> saveWeatherTask = new AtomicReference<>();
         saveWeatherTask.getAndSet(new SaveWeatherTask(this.context));
         saveWeatherTask.get().execute(weather);
-        System.out.println("saved");
     }
 
 }

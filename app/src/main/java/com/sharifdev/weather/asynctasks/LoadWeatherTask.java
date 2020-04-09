@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.sharifdev.weather.R;
+import com.sharifdev.weather.datamodels.WeatherDataCallback;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 
 import java.io.BufferedReader;
@@ -16,9 +17,12 @@ import java.io.InputStreamReader;
 public class LoadWeatherTask extends AsyncTask<Void, Void, WeatherResponse> {
     @SuppressLint("StaticFieldLeak")
     private Context context;
+    private WeatherDataCallback callback;
 
-    public LoadWeatherTask(Context context) {
+
+    public LoadWeatherTask(Context context, WeatherDataCallback callback) {
         this.context = context;
+        this.callback = callback;
     }
 
     @Override
