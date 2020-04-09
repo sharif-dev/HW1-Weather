@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                                     WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
                                     String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
                                     iconTask.execute(iconUrl);
+                                    WeatherData.getInstance(getApplicationContext()).saveWeather(data);
                                 }
 
                                 @Override
