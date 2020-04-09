@@ -65,6 +65,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton refresh = findViewById(R.id.refresh);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (InternetConnectionChecker.checkConnection(getApplicationContext())) {
+                    Snackbar.make(
+                            view,
+                            getString(R.string.refresh),
+                            Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(
+                            view,
+                            getString(R.string.no_internet_connection),
+                            Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
         Date now = calendar.getTime();
         String pattern = "EEE, MMM d HH:mm";
