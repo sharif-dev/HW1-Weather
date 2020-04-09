@@ -19,6 +19,10 @@ public class Condition {
         }
     }
 
+    public String getConditionIconLink() {
+        return this.conditionIconLink;
+    }
+
     public String getCondition() {
         return condition;
     }
