@@ -28,9 +28,11 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     Calendar calendar = Calendar.getInstance();
+    ImageView conditionIcon;
     TextView temperatureText;
     TextView textCity;
-    ImageView conditionIcon;
+    TextView dateText;
+    City city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         temperatureText = findViewById(R.id.text_temperature);
         conditionIcon = findViewById(R.id.condition_icon);
         textCity = findViewById(R.id.text_city);
+        dateText = findViewById(R.id.text_date);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,13 +56,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView dateText = findViewById(R.id.text_date);
+
         Date now = calendar.getTime();
         String pattern = "EEE, MMM d HH:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(now);
         dateText.setText(date);
 
+        refresh();
+    }
+
+    public void refresh() {
         CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
