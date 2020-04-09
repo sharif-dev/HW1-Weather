@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class LocationActivity extends AppCompatActivity {
+public class    LocationActivity extends AppCompatActivity {
     private CityAdapter adapter;
     ListView searchResultListView;
     EditText citySearchText;
