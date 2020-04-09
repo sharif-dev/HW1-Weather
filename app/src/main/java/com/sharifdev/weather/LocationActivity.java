@@ -1,5 +1,6 @@
 package com.sharifdev.weather;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sharifdev.weather.datamodels.CityData;
 import com.sharifdev.weather.datamodels.CityDataCallback;
 import com.sharifdev.weather.models.coordination.City;
+import com.sharifdev.weather.network.InternetConnectionChecker;
 
 import java.util.Collections;
 import java.util.List;
@@ -103,25 +106,33 @@ public class LocationActivity extends AppCompatActivity {
         searchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                City clickedCity = (City) searchResultListView.getAdapter().getItem(position);
+                if (InternetConnectionChecker.checkConnection(getApplicationContext())) {
+                    City clickedCity = (City) searchResultListView.getAdapter().getItem(position);
 
-                CityData.getInstance(getApplicationContext()).saveCity(clickedCity, new CityDataCallback() {
-                    @Override
-                    public void onComplete(List<City> cities) {
-                        City savedCity = cities.get(0);
+                    CityData.getInstance(getApplicationContext()).saveCity(clickedCity, new CityDataCallback() {
+                        @Override
+                        public void onComplete(List<City> cities) {
+                            City savedCity = cities.get(0);
 
-                        currentCity.setText(savedCity.getRealName());
-                        latitude.setText(String.format("Latitude: %.2f, ", savedCity.getCoordinates().get(1)));
-                        longitude.setText(String.format("Longitude: %.2f, ", savedCity.getCoordinates().get(0)));
+                            currentCity.setText(savedCity.getRealName());
+                            latitude.setText(String.format("Latitude: %.2f, ", savedCity.getCoordinates().get(1)));
+                            longitude.setText(String.format("Longitude: %.2f, ", savedCity.getCoordinates().get(0)));
 
-                        LocationActivity.this.finish();
-                    }
+                            LocationActivity.this.finish();
+                        }
 
-                    @Override
-                    public void onFailure(Throwable t) {
+                        @Override
+                        public void onFailure(Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    Snackbar.make(
+                            view,
+                            getString(R.string.no_internet_connection),
+                            Snackbar.LENGTH_LONG).show();
+                }
+
             }
         });
     }
