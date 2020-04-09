@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     TextView temperatureText;
     TextView textCity;
     TextView dateText;
+    TextView weatherStatusText;
     City city;
 
     @Override
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         conditionIcon = findViewById(R.id.condition_icon);
         textCity = findViewById(R.id.text_city);
         dateText = findViewById(R.id.text_date);
+        weatherStatusText = findViewById(R.id.weather_status);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onComplete(WeatherResponse data) {
                                     float temperature = data.getCurrentSummeryWeather().getTemperature();
                                     temperatureText.setText(String.format("%.1f°", temperature));
+                                    weatherStatusText.setText(data.getCurrentSummeryWeather().getCondition().getCondition());
 
                                     WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
                                     String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
