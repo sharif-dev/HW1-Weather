@@ -66,11 +66,17 @@ public class MainActivity extends AppCompatActivity {
         refresh();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
+    }
+
     public void refresh() {
         CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
-                City city = cities.get(0);
+                city = cities.get(0);
                 if (city == null) {
                     Intent intent = new Intent(MainActivity.this, LocationActivity.class);
                     startActivity(intent);
