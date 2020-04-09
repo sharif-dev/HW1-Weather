@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.sharifdev.weather.asynctasks.WeatherIconTask;
 import com.sharifdev.weather.datamodels.CityData;
 import com.sharifdev.weather.datamodels.CityDataCallback;
@@ -18,6 +19,7 @@ import com.sharifdev.weather.datamodels.WeatherData;
 import com.sharifdev.weather.datamodels.WeatherDataCallback;
 import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
+import com.sharifdev.weather.network.InternetConnectionChecker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,8 +53,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, LocationActivity.class);
-                startActivity(intent);
+                if (InternetConnectionChecker.checkConnection(getApplicationContext())) {
+                    Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(
+                            view,
+                            getString(R.string.no_internet_connection),
+                            Snackbar.LENGTH_LONG).show();
+                }
             }
         });
 

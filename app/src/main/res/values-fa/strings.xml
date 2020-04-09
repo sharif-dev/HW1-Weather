@@ -24,4 +24,5 @@
     </string-array>
     <string name="submit">ثبت</string>
     <string name="menu_refresh">تازه سازی</string>
+    <string name="no_internet_connection">عدم اتصال به اینترنت</string>
 </resources>
