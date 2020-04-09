@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sharifdev.weather.asynctasks.WeatherIconTask;
 import com.sharifdev.weather.datamodels.CityData;
 import com.sharifdev.weather.datamodels.CityDataCallback;
 import com.sharifdev.weather.datamodels.WeatherData;
 import com.sharifdev.weather.datamodels.WeatherDataCallback;
-import com.sharifdev.weather.datamodels.WeatherIconTask;
 import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 

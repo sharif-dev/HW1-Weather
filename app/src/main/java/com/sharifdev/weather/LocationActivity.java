@@ -45,10 +45,15 @@ public class LocationActivity extends AppCompatActivity {
             @Override
             public void onComplete(List<City> cities) {
                 City city = cities.get(0);
-
-                currentCity.setText(city.getRealName());
-                latitude.setText(String.format("Latitude: %.2f, ", city.getCoordinates().get(1)));
-                longitude.setText(String.format("Longitude: %.2f, ", city.getCoordinates().get(0)));
+                if (city != null) {
+                    currentCity.setText(city.getRealName());
+                    latitude.setText(String.format("Latitude: %.2f, ", city.getCoordinates().get(1)));
+                    longitude.setText(String.format("Longitude: %.2f, ", city.getCoordinates().get(0)));
+                } else {
+                    currentCity.setText("[ SELECT A CITY ]");
+                    latitude.setText("");
+                    longitude.setText("");
+                }
             }
 
             @Override
