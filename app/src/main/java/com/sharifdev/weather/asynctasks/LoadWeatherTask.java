@@ -6,32 +6,32 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.sharifdev.weather.R;
-import com.sharifdev.weather.datamodels.CityDataCallback;
-import com.sharifdev.weather.models.coordination.City;
+import com.sharifdev.weather.datamodels.WeatherDataCallback;
+import com.sharifdev.weather.models.weather.WeatherResponse;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 
-public class LoadCityTask extends AsyncTask<Void, Void, City> {
+public class LoadWeatherTask extends AsyncTask<Void, Void, WeatherResponse> {
     @SuppressLint("StaticFieldLeak")
     private Context context;
-    private CityDataCallback callback;
+    private WeatherDataCallback callback;
 
-    public LoadCityTask(Context context, CityDataCallback callback) {
+
+    public LoadWeatherTask(Context context, WeatherDataCallback callback) {
         this.context = context;
         this.callback = callback;
     }
 
     @Override
-    protected City doInBackground(Void... voids) {
+    protected WeatherResponse doInBackground(Void... voids) {
         try {
             InputStreamReader inputStreamReader =
                     new InputStreamReader(
                             context.openFileInput(
-                                    context.getString(R.string.city_file_name)));
+                                    context.getString(R.string.weather_file_name)));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuilder stringBuilder = new StringBuilder();
             String string;
@@ -43,15 +43,10 @@ public class LoadCityTask extends AsyncTask<Void, Void, City> {
             bufferedReader.close();
             String json = stringBuilder.toString();
             Gson gson = new Gson();
-            return gson.fromJson(json, City.class);
+            return gson.fromJson(json, WeatherResponse.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(City city) {
-        this.callback.onComplete(Collections.singletonList(city));
     }
 }

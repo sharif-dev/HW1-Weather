@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, LocationActivity.class);
                     startActivity(intent);
                 } else {
-                    WeatherData.getInstance().getWeatherData(
+                    WeatherData.getInstance(getApplicationContext()).getWeatherData(
                             city,
                             getString(R.string.weather_api),
                             getString(R.string.weather_token),
