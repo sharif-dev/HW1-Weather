@@ -27,7 +27,7 @@ public class WeatherData {
         return instance;
     }
 
-    public void loadWeatherData(City city, String weatherAPI, String apiToken, final WeatherDataCallback callback) {
+    public void getWeatherData(City city, String weatherAPI, String apiToken, final WeatherDataCallback callback) {
         // TODO: refactor       @mhbahmani
         // TODO: read from file in another thread if exists
 
