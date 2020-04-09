@@ -29,6 +29,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     Calendar calendar = Calendar.getInstance();
     TextView temperatureText;
+    TextView textCity;
     ImageView conditionIcon;
 
     @Override
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         temperatureText = findViewById(R.id.text_temperature);
         conditionIcon = findViewById(R.id.condition_icon);
+        textCity = findViewById(R.id.text_city);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, LocationActivity.class);
                     startActivity(intent);
                 } else {
+                    textCity.setText(city.getRealName());
                     WeatherData.getInstance(getApplicationContext()).getWeatherData(
                             city,
                             getString(R.string.weather_api),
