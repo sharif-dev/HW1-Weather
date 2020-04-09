@@ -113,6 +113,8 @@ public class LocationActivity extends AppCompatActivity {
                         currentCity.setText(savedCity.getRealName());
                         latitude.setText(String.format("Latitude: %.2f, ", savedCity.getCoordinates().get(1)));
                         longitude.setText(String.format("Longitude: %.2f, ", savedCity.getCoordinates().get(0)));
+
+                        LocationActivity.this.finish();
                     }
 
                     @Override
