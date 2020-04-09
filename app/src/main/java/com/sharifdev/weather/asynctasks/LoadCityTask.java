@@ -27,8 +27,6 @@ public class LoadCityTask extends AsyncTask<Void, Void, City> {
 
     @Override
     protected City doInBackground(Void... voids) {
-        File file = context.getFilesDir();
-        System.out.println(file.getPath());
         try {
             InputStreamReader inputStreamReader =
                     new InputStreamReader(

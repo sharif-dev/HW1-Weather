@@ -27,8 +27,6 @@ public class LoadWeatherTask extends AsyncTask<Void, Void, WeatherResponse> {
 
     @Override
     protected WeatherResponse doInBackground(Void... voids) {
-        File file = context.getFilesDir();
-        System.out.println(file.getPath());
         try {
             InputStreamReader inputStreamReader =
                     new InputStreamReader(

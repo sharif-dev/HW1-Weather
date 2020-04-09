@@ -33,7 +33,7 @@ public class WeatherData {
     public void getWeatherData(City city, String weatherAPI, String apiToken, final WeatherDataCallback callback) {
         boolean internetConnection = InternetConnectionChecker.checkConnection(context);
 
-        loadWeather(callback);//TODO: add whatever it needs
+        //loadWeather(callback);//TODO: add whatever it needs
 
         if(internetConnection) {
             final RetrofitClient weatherClient = new RetrofitClient(weatherAPI);
