@@ -11,7 +11,6 @@ import com.sharifdev.weather.network.RetrofitClient;
 import com.sharifdev.weather.network.WeatherAPI;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,7 +18,7 @@ import retrofit2.Response;
 
 public class WeatherData {
     private static WeatherData instance = new WeatherData();
-    private WeatherResponse weather = new WeatherResponse();
+    private WeatherResponse weather;
     private Context context;
 
     private WeatherData() {
@@ -64,9 +63,8 @@ public class WeatherData {
     }
 
     public void saveWeather(WeatherResponse weather) {
-        final AtomicReference<SaveWeatherTask> saveWeatherTask = new AtomicReference<>();
-        saveWeatherTask.getAndSet(new SaveWeatherTask(this.context));
-        saveWeatherTask.get().execute(weather);
+        SaveWeatherTask saveWeatherTask = new SaveWeatherTask(this.context);
+        saveWeatherTask.execute(weather);
     }
 
 }
