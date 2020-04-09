@@ -6,19 +6,23 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.sharifdev.weather.R;
+import com.sharifdev.weather.datamodels.CityDataCallback;
 import com.sharifdev.weather.models.coordination.City;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 
 public class LoadCityTask extends AsyncTask<Void, Void, City> {
     @SuppressLint("StaticFieldLeak")
     private Context context;
+    private CityDataCallback callback;
 
-    public LoadCityTask(Context context) {
+    public LoadCityTask(Context context, CityDataCallback callback) {
         this.context = context;
+        this.callback = callback;
     }
 
     @Override
@@ -46,5 +50,10 @@ public class LoadCityTask extends AsyncTask<Void, Void, City> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(City city) {
+        this.callback.onComplete(Collections.singletonList(city));
     }
 }

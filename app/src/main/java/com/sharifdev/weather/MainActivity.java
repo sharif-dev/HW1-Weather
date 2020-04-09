@@ -61,27 +61,33 @@ public class MainActivity extends AppCompatActivity {
         CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
-                WeatherData.getInstance().getWeatherData(
-                        cities.get(0),
-                        getString(R.string.weather_api),
-                        getString(R.string.weather_token),
-                        new WeatherDataCallback() {
-                            @Override
-                            public void onComplete(WeatherResponse data) {
-                                float temperature = data.getCurrentSummeryWeather().getTemperature();
-                                temperatureText.setText(String.format("%.1f°", temperature));
+                City city = cities.get(0);
+                if (city == null) {
+                    Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                    startActivity(intent);
+                } else {
+                    WeatherData.getInstance().getWeatherData(
+                            city,
+                            getString(R.string.weather_api),
+                            getString(R.string.weather_token),
+                            new WeatherDataCallback() {
+                                @Override
+                                public void onComplete(WeatherResponse data) {
+                                    float temperature = data.getCurrentSummeryWeather().getTemperature();
+                                    temperatureText.setText(String.format("%.1f°", temperature));
 
-                                WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
-                                String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
-                                iconTask.execute(iconUrl);
-                            }
+                                    WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
+                                    String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
+                                    iconTask.execute(iconUrl);
+                                }
 
-                            @Override
-                            public void onFailure(Throwable t) {
-                                Log.e("weather", Objects.requireNonNull(t.getMessage()));
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    Log.e("weather", Objects.requireNonNull(t.getMessage()));
+                                }
                             }
-                        }
-                );
+                    );
+                }
             }
 
             @Override
