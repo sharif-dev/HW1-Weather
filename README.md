@@ -9,6 +9,6 @@ mobile_dev course - Home Work 1 [document](https://github.com/sharif-dev/HW1-Wea
 | Mohammadamin Ghasemzade |    97110296    |
 |    Ali Shirmohammadi   |    97106068    |
 
-![screen shot 1](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/1.jpg)
-![screen shot 2](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/2.jpg)
-![screen shot 3](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/3.jpg)
+![screen shot 1](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/1.jpg | width=200)
+![screen shot 2](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/2.jpg | width=200)
+![screen shot 3](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/3.jpg | width=200)
