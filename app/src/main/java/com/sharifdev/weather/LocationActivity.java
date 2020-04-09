@@ -41,7 +41,7 @@ public class LocationActivity extends AppCompatActivity {
         adapter = new CityAdapter(this, Collections.<City>emptyList());
         searchResultListView.setAdapter(adapter);
 
-        CityData.getInstance(getApplicationContext()).getCity(new CityDataCallback() {
+        CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
                 City city = cities.get(0);
@@ -100,7 +100,7 @@ public class LocationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 City clickedCity = (City) searchResultListView.getAdapter().getItem(position);
 
-                CityData.getInstance(getApplicationContext()).setCity(clickedCity, new CityDataCallback() {
+                CityData.getInstance(getApplicationContext()).saveCity(clickedCity, new CityDataCallback() {
                     @Override
                     public void onComplete(List<City> cities) {
                         City savedCity = cities.get(0);

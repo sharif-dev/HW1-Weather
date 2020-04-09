@@ -1,5 +1,6 @@
 package com.sharifdev.weather.asynctasks;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class LoadCityTask extends AsyncTask<Void, Void, City> {
+    @SuppressLint("StaticFieldLeak")
     private Context context;
 
     public LoadCityTask(Context context) {

@@ -11,6 +11,7 @@ import com.sharifdev.weather.asynctasks.SaveCityTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import retrofit2.Call;
@@ -20,33 +21,32 @@ import retrofit2.Response;
 public class CityData {
     private Context context;
     private static CityData instance = new CityData();
-    private City defaultCity;
-
-    private CityData() {
-        defaultCity = new City();
-        defaultCity.setName("Tehran");
-        defaultCity.setCoordinates(new ArrayList<Double>());
-        defaultCity.getCoordinates().add(51.388973);
-        defaultCity.getCoordinates().add(35.689198);
-    }
+    private City city = new City();
 
     public static CityData getInstance(Context context) {
         instance.context = context;
         return instance;
     }
 
-    public void getCity(CityDataCallback callback) {
+    public void loadCity(CityDataCallback callback) {
         final AtomicReference<LoadCityTask> loadCityTask = new AtomicReference<>();
         loadCityTask.getAndSet(new LoadCityTask(this.context));
-        loadCityTask.get().execute();
+        try {
+            City city = loadCityTask.get().execute().get();
+            setCity(city);
+            System.out.println("loaded" + city.getRealName() + city.getCoordinates());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        callback.onComplete(Collections.singletonList(defaultCity));
+        callback.onComplete(Collections.singletonList(city));
     }
 
-    public void setCity(final City city, CityDataCallback callback) {
+    public void saveCity(final City city, CityDataCallback callback) {
         final AtomicReference<SaveCityTask> saveCityTask = new AtomicReference<>();
         saveCityTask.getAndSet(new SaveCityTask(this.context));
         saveCityTask.get().execute(city);
+        System.out.println("saved" + city.getRealName() + city.getCoordinates());
 
         callback.onComplete(Collections.singletonList(city));
     }
@@ -67,7 +67,10 @@ public class CityData {
                 callback.onFailure(t);
             }
         });
+    }
 
+    public void setCity(City city) {
+        this.city = city;
     }
 
 }
