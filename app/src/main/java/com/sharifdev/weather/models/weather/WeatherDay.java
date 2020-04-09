@@ -2,6 +2,10 @@ package com.sharifdev.weather.models.weather;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class WeatherDay {
     @SerializedName("date")
     private String date;
@@ -12,6 +16,16 @@ public class WeatherDay {
 
     public String getDate() {
         return date;
+    }
+
+    public String getDateSimple() {
+        try {
+            Date parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            SimpleDateFormat format = new SimpleDateFormat("EEE");
+            return format.format(parsedDate);
+        } catch (ParseException e) {
+            return date;
+        }
     }
 
     public void setDate(String date) {
