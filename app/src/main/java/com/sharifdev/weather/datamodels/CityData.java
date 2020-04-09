@@ -2,11 +2,12 @@ package com.sharifdev.weather.datamodels;
 
 import android.content.Context;
 
+import com.sharifdev.weather.asynctasks.LoadCityTask;
 import com.sharifdev.weather.models.coordination.CitiesResponse;
 import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.network.Mapbox;
 import com.sharifdev.weather.network.RetrofitClient;
-import com.sharifdev.weather.asynctasks.SaveTask;
+import com.sharifdev.weather.asynctasks.SaveCityTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,14 +23,11 @@ public class CityData {
     private City defaultCity;
 
     private CityData() {
+        defaultCity = new City();
         defaultCity.setName("Tehran");
         defaultCity.setCoordinates(new ArrayList<Double>());
         defaultCity.getCoordinates().add(51.388973);
         defaultCity.getCoordinates().add(35.689198);
-    }
-
-    public static CityData getInstance() {
-        return instance;
     }
 
     public static CityData getInstance(Context context) {
@@ -38,16 +36,17 @@ public class CityData {
     }
 
     public void getCity(CityDataCallback callback) {
-        // TODO: load city from file data in another Thread.
+        final AtomicReference<LoadCityTask> loadCityTask = new AtomicReference<>();
+        loadCityTask.getAndSet(new LoadCityTask(this.context));
+        loadCityTask.get().execute();
 
         callback.onComplete(Collections.singletonList(defaultCity));
     }
 
     public void setCity(final City city, CityDataCallback callback) {
-        // TODO: save city in file in another Thread.
-        final AtomicReference<SaveTask> saveTask = new AtomicReference<>();
-        saveTask.getAndSet(new SaveTask(this.context));
-        saveTask.get().execute(city);
+        final AtomicReference<SaveCityTask> saveCityTask = new AtomicReference<>();
+        saveCityTask.getAndSet(new SaveCityTask(this.context));
+        saveCityTask.get().execute(city);
 
         callback.onComplete(Collections.singletonList(city));
     }

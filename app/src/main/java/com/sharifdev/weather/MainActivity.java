@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         String date = simpleDateFormat.format(now);
         dateText.setText(date);
 
-        CityData.getInstance().getCity(new CityDataCallback() {
+        CityData.getInstance(getApplicationContext()).getCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
                 WeatherData.getInstance().getWeatherData(
