@@ -12,26 +12,6 @@
     <string name="weather_token" translatable="false">5d9ba3217a8347bf8da171141200104</string>
     <string name="mapbox_api" translatable="false">https://api.mapbox.com/geocoding/v5/mapbox.places/</string>
     <string name="mapbox_token" translatable="false">pk.eyJ1IjoiYWxpc2hpciIsImEiOiJjazhoN2JheDcwOWZ0M25xa2ZvMXIwYjYxIn0.EYQO0NPwPPyO5zHQG8sl3Q</string>
-    <string-array name="cities">
-        <item>Tehran</item>
-        <item>Mashhad</item>
-        <item>Isfahan</item>
-        <item>Shiraz</item>
-        <item>Tabriz</item>
-        <item>Qom</item>
-        <item>Kermanshah</item>
-        <item>Rasht</item>
-        <item>Ahvaz</item>
-        <item>Hamedan</item>
-        <item>Yazd</item>
-        <item>Ardabil</item>
-        <item>Zahedan</item>
-        <item>Kerman</item>
-        <item>Karaj</item>
-        <item>Qazvin</item>
-        <item>Kashan</item>
-
-    </string-array>
     <string name="no_internet_connection">no_internet_connection</string>
     <string name="loction_not_supported">Sorry but this location is not supported.</string>
 </resources>

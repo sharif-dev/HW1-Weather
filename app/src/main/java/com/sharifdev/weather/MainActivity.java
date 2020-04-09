@@ -1,16 +1,17 @@
 package com.sharifdev.weather;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        content.setVisibility(View.GONE);
 
         refresh();
     }
@@ -122,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void refresh() {
         content.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
         CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
@@ -168,24 +171,8 @@ public class MainActivity extends AppCompatActivity {
                                     iconTask.execute(iconUrl);
                                     WeatherData.getInstance(getApplicationContext()).saveWeather(data);
 
-                                    content.setAlpha(0f);
                                     content.setVisibility(View.VISIBLE);
-
-                                    content.animate()
-                                            .alpha(1f)
-                                            .setDuration(shortAnimationDuration)
-                                            .setListener(null);
-
-                                    progressBar.animate()
-                                            .alpha(0f)
-                                            .setDuration(shortAnimationDuration)
-                                            .setListener(new AnimatorListenerAdapter() {
-                                                @Override
-                                                public void onAnimationEnd(Animator animation) {
-                                                    progressBar.setVisibility(View.GONE);
-                                                }
-                                            });
-
+                                    progressBar.setVisibility(View.GONE);
                                 }
 
                                 @Override
@@ -203,5 +190,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                refresh();
+                break;
+        }
+        return true;
     }
 }
