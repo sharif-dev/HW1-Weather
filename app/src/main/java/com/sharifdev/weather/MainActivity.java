@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(Throwable t) {
                                     Log.e("weather", Objects.requireNonNull(t.getMessage()));
+                                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                     );

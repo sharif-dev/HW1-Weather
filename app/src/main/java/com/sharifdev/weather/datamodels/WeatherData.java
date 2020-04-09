@@ -3,6 +3,7 @@ package com.sharifdev.weather.datamodels;
 import android.content.Context;
 import android.util.Log;
 
+import com.sharifdev.weather.R;
 import com.sharifdev.weather.asynctasks.LoadWeatherTask;
 import com.sharifdev.weather.asynctasks.SaveWeatherTask;
 import com.sharifdev.weather.models.coordination.City;
@@ -43,7 +44,10 @@ public class WeatherData {
 
         try {
             WeatherResponse weatherResponse = loadWeather(callback);
-            callback.onComplete(weatherResponse);
+            if (city.equals(weatherResponse.getLocation().getName())) {
+                callback.onComplete(weatherResponse);
+                return;
+            }
         } catch (DataNotUpdateException ignored) { }
 
         if(internetConnection) {
@@ -57,6 +61,14 @@ public class WeatherData {
             call.enqueue(new Callback<WeatherResponse>() {
                 @Override
                 public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                    try {
+                        response.body().getLocation().getName();
+                        response.body().getCurrentSummeryWeather().getHumidity();
+                        response.body().getWeatherForecast().getWeatherDay();
+                    } catch (NullPointerException e) {
+                        callback.onFailure(new Throwable(context.getString(R.string.loction_not_supported)));
+                        return;
+                    }
                     callback.onComplete(response.body());
                 }
 
@@ -104,7 +116,7 @@ public class WeatherData {
         try {
             Date lastUpdateTime = simpleDateFormatter.parse(lastSavedDataTime);
             Date now = Calendar.getInstance().getTime();
-            int diffhours = (int) ((lastUpdateTime.getTime() - now.getTime()) / (60 * 1000));
+            int diffhours = (int) ((lastUpdateTime.getTime() - now.getTime()) / (60 * 60 * 1000));
 
             // check if last update is too old
             if (diffhours > OLDNESS_HOUR_CONST) {
