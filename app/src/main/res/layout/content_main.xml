@@ -90,8 +90,8 @@
 
             <ImageView
                 android:id="@+id/forecast_condition_0"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 app:srcCompat="@drawable/text_icon" />
 
             <LinearLayout
@@ -144,8 +144,8 @@
 
             <ImageView
                 android:id="@+id/forecast_condition_1"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 app:srcCompat="@drawable/text_icon" />
 
             <LinearLayout
@@ -198,8 +198,8 @@
 
             <ImageView
                 android:id="@+id/forecast_condition_2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 app:srcCompat="@drawable/text_icon" />
 
             <LinearLayout
@@ -252,8 +252,8 @@
 
             <ImageView
                 android:id="@+id/forecast_condition_3"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 app:srcCompat="@drawable/text_icon" />
 
             <LinearLayout
@@ -306,8 +306,8 @@
 
             <ImageView
                 android:id="@+id/forecast_condition_4"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 app:srcCompat="@drawable/text_icon" />
 
             <LinearLayout
