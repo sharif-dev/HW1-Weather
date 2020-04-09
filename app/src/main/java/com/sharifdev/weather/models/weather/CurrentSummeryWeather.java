@@ -2,6 +2,10 @@ package com.sharifdev.weather.models.weather;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CurrentSummeryWeather {
     @SerializedName("last_updated")
     private String lastUpdated;
@@ -22,6 +26,17 @@ public class CurrentSummeryWeather {
 
     public String getLastUpdated() {
         return lastUpdated;
+    }
+
+    public String getLastUpdatedSimple() {
+        try {
+            Date parsedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(lastUpdated);
+            SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d HH:mm");
+            return format.format(parsedDate);
+        } catch (ParseException e) {
+            return lastUpdated;
+        }
+
     }
 
     public void setLastUpdated(String lastUpdated) {

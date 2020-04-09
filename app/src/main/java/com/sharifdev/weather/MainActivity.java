@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                                     float temperature = data.getCurrentSummeryWeather().getTemperature();
                                     temperatureText.setText(String.format("%.1f°", temperature));
                                     weatherStatusText.setText(data.getCurrentSummeryWeather().getCondition().getCondition());
-                                    dateText.setText(data.getCurrentSummeryWeather().getLastUpdated());
+                                    dateText.setText(data.getCurrentSummeryWeather().getLastUpdatedSimple());
 
                                     for (int i = 0; i < forecastCount; i++) {
                                         TextView date = findViewById(forecastDateIds[i]);
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                                         TextView high = findViewById(forecastHighIds[i]);
                                         ImageView forecastCondition = findViewById(forecastImageIds[i]);
 
-                                        date.setText(data.getWeatherForecast().getWeatherDay().get(i).getDate().substring(5));
+                                        date.setText(data.getWeatherForecast().getWeatherDay().get(i).getDateSimple());
                                         float minTemperature = data.getWeatherForecast().getWeatherDay().get(i).getWeather().getMinTemperature();
                                         float maxTemperature = data.getWeatherForecast().getWeatherDay().get(i).getWeather().getMaxTemperature();
                                         String minTempStr = String.format("%.1f°", minTemperature);
