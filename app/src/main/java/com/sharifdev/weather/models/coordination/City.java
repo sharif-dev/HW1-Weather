@@ -1,5 +1,7 @@
 package com.sharifdev.weather.models.coordination;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -40,4 +42,13 @@ public class City {
     public List<Double> getCoordinates() {
         return coordinates;
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof String)){
+            return false;
+        }
+        return this.name.equals(obj.toString());
+    }
+
 }
