@@ -1,4 +1,4 @@
-package com.sharifdev.weather.datamodels;
+package com.sharifdev.weather.asynctasks;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

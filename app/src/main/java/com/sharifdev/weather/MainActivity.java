@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sharifdev.weather.asynctasks.WeatherIconTask;
 import com.sharifdev.weather.datamodels.CityData;
 import com.sharifdev.weather.datamodels.CityDataCallback;
 import com.sharifdev.weather.datamodels.WeatherData;
 import com.sharifdev.weather.datamodels.WeatherDataCallback;
-import com.sharifdev.weather.datamodels.WeatherIconTask;
 import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 
@@ -28,8 +28,11 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     Calendar calendar = Calendar.getInstance();
-    TextView temperatureText;
     ImageView conditionIcon;
+    TextView temperatureText;
+    TextView textCity;
+    TextView dateText;
+    City city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         temperatureText = findViewById(R.id.text_temperature);
         conditionIcon = findViewById(R.id.condition_icon);
+        textCity = findViewById(R.id.text_city);
+        dateText = findViewById(R.id.text_date);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,37 +56,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView dateText = findViewById(R.id.text_date);
+
         Date now = calendar.getTime();
         String pattern = "EEE, MMM d HH:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(now);
         dateText.setText(date);
 
-        CityData.getInstance().getCity(new CityDataCallback() {
+        refresh();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
+    }
+
+    public void refresh() {
+        CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
-                WeatherData.getInstance().getWeatherData(
-                        cities.get(0),
-                        getString(R.string.weather_api),
-                        getString(R.string.weather_token),
-                        new WeatherDataCallback() {
-                            @Override
-                            public void onComplete(WeatherResponse data) {
-                                float temperature = data.getCurrentSummeryWeather().getTemperature();
-                                temperatureText.setText(String.format("%.1f°", temperature));
+                city = cities.get(0);
+                if (city == null) {
+                    Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                    startActivity(intent);
+                } else {
+                    textCity.setText(city.getRealName());
+                    WeatherData.getInstance(getApplicationContext()).getWeatherData(
+                            city,
+                            getString(R.string.weather_api),
+                            getString(R.string.weather_token),
+                            new WeatherDataCallback() {
+                                @Override
+                                public void onComplete(WeatherResponse data) {
+                                    float temperature = data.getCurrentSummeryWeather().getTemperature();
+                                    temperatureText.setText(String.format("%.1f°", temperature));
 
-                                WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
-                                String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
-                                iconTask.execute(iconUrl);
-                            }
+                                    WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
+                                    String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
+                                    iconTask.execute(iconUrl);
+                                }
 
-                            @Override
-                            public void onFailure(Throwable t) {
-                                Log.e("weather", Objects.requireNonNull(t.getMessage()));
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    Log.e("weather", Objects.requireNonNull(t.getMessage()));
+                                }
                             }
-                        }
-                );
+                    );
+                }
             }
 
             @Override

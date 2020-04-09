@@ -41,14 +41,19 @@ public class LocationActivity extends AppCompatActivity {
         adapter = new CityAdapter(this, Collections.<City>emptyList());
         searchResultListView.setAdapter(adapter);
 
-        CityData.getInstance().getCity(new CityDataCallback() {
+        CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
                 City city = cities.get(0);
-
-                currentCity.setText(city.getRealName());
-                latitude.setText(String.format("Latitude: %.2f, ", city.getCoordinates().get(1)));
-                longitude.setText(String.format("Longitude: %.2f, ", city.getCoordinates().get(0)));
+                if (city != null) {
+                    currentCity.setText(city.getRealName());
+                    latitude.setText(String.format("Latitude: %.2f, ", city.getCoordinates().get(1)));
+                    longitude.setText(String.format("Longitude: %.2f, ", city.getCoordinates().get(0)));
+                } else {
+                    currentCity.setText("[ SELECT A CITY ]");
+                    latitude.setText("");
+                    longitude.setText("");
+                }
             }
 
             @Override
@@ -65,7 +70,7 @@ public class LocationActivity extends AppCompatActivity {
                     adapter.setCities(Collections.<City>emptyList());
                     adapter.notifyDataSetChanged();
                 } else {
-                    CityData.getInstance().searchCities(
+                    CityData.getInstance(getApplicationContext()).searchCities(
                             query,
                             getString(R.string.mapbox_api),
                             getString(R.string.mapbox_token),
@@ -100,7 +105,7 @@ public class LocationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 City clickedCity = (City) searchResultListView.getAdapter().getItem(position);
 
-                CityData.getInstance().setCity(clickedCity, new CityDataCallback() {
+                CityData.getInstance(getApplicationContext()).saveCity(clickedCity, new CityDataCallback() {
                     @Override
                     public void onComplete(List<City> cities) {
                         City savedCity = cities.get(0);
@@ -108,6 +113,8 @@ public class LocationActivity extends AppCompatActivity {
                         currentCity.setText(savedCity.getRealName());
                         latitude.setText(String.format("Latitude: %.2f, ", savedCity.getCoordinates().get(1)));
                         longitude.setText(String.format("Longitude: %.2f, ", savedCity.getCoordinates().get(0)));
+
+                        LocationActivity.this.finish();
                     }
 
                     @Override

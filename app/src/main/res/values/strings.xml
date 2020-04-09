@@ -5,6 +5,8 @@
     <string name="select_city_hint">Select city</string>
     <string name="submit">submit</string>
     <string name="menu_refresh">refresh</string>
+    <string name="city_file_name" translatable="false">city.json</string>
+    <string name="weather_file_name" translatable="false">weather.json</string>
     <string name="weather_api" translatable="false">http://api.weatherapi.com/v1/</string>
     <string name="weather_token" translatable="false">5d9ba3217a8347bf8da171141200104</string>
     <string name="mapbox_api" translatable="false">https://api.mapbox.com/geocoding/v5/mapbox.places/</string>
