@@ -16,7 +16,6 @@ import retrofit2.Response;
 public class CityData {
     private Context context;
     private static CityData instance = new CityData();
-    private City city;
 
     public static CityData getInstance(Context context) {
         instance.context = context;
@@ -26,16 +25,11 @@ public class CityData {
     public void loadCity(CityDataCallback callback) {
         LoadCityTask loadCityTask = new LoadCityTask(this.context, callback);
         loadCityTask.execute();
-
-//        callback.onComplete(Collections.singletonList(city));
     }
 
     public void saveCity(final City city, CityDataCallback callback) {
         SaveCityTask saveCityTask = new SaveCityTask(this.context, callback);
         saveCityTask.execute(city);
-        System.out.println("saving" + city.getRealName() + city.getCoordinates());
-
-//        callback.onComplete(Collections.singletonList(city));
     }
 
     public void searchCities(String query, String api, String token, final CityDataCallback callback) {
@@ -55,9 +49,4 @@ public class CityData {
             }
         });
     }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
 }
