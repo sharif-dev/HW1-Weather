@@ -13,10 +13,12 @@ import java.util.Objects;
 public class WeatherIconTask extends AsyncTask<String, Void, Bitmap> {
     private ImageView bmImage;
     private float displayDensity;
+    private int sizeDp;
 
-    public WeatherIconTask(ImageView bmImage, float displayDensity) {
+    public WeatherIconTask(ImageView bmImage, float displayDensity, int sizeDp) {
         this.bmImage = bmImage;
         this.displayDensity = displayDensity;
+        this.sizeDp = sizeDp;
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -35,8 +37,8 @@ public class WeatherIconTask extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap result) {
         bmImage.setImageBitmap(result);
         final float scale = this.displayDensity;
-        int dpWidthInPx = (int) (64 * scale);
-        int dpHeightInPx = (int) (64 * scale);
+        int dpWidthInPx = (int) (sizeDp * scale);
+        int dpHeightInPx = (int) (sizeDp * scale);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
         bmImage.setLayoutParams(layoutParams);
     }

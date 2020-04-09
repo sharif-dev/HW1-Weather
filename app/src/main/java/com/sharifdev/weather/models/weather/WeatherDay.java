@@ -2,7 +2,7 @@ package com.sharifdev.weather.models.weather;
 
 import com.google.gson.annotations.SerializedName;
 
-class WeatherDay {
+public class WeatherDay {
     @SerializedName("date")
     private String date;
     @SerializedName("day")

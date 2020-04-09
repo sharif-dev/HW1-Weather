@@ -34,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
     TextView dateText;
     TextView weatherStatusText;
     City city;
+    int[] forecastImageIds;
+    int[] forecastLowIds;
+    int[] forecastDateIds;
+    int[] forecastHighIds;
+    int forecastCount = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,38 @@ public class MainActivity extends AppCompatActivity {
         textCity = findViewById(R.id.text_city);
         dateText = findViewById(R.id.text_date);
         weatherStatusText = findViewById(R.id.weather_status);
+
+        forecastImageIds = new int[]{
+                R.id.forecast_condition_0,
+                R.id.forecast_condition_1,
+                R.id.forecast_condition_2,
+                R.id.forecast_condition_3,
+                R.id.forecast_condition_4,
+        };
+
+        forecastDateIds = new int[]{
+                R.id.forecast_date_0,
+                R.id.forecast_date_1,
+                R.id.forecast_date_2,
+                R.id.forecast_date_3,
+                R.id.forecast_date_4,
+        };
+
+        forecastLowIds = new int[]{
+                R.id.forecast_low_0,
+                R.id.forecast_low_1,
+                R.id.forecast_low_2,
+                R.id.forecast_low_3,
+                R.id.forecast_low_4,
+        };
+
+        forecastHighIds = new int[]{
+                R.id.forecast_high_0,
+                R.id.forecast_high_1,
+                R.id.forecast_high_2,
+                R.id.forecast_high_3,
+                R.id.forecast_high_4,
+        };
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,7 +132,26 @@ public class MainActivity extends AppCompatActivity {
                                     temperatureText.setText(String.format("%.1f°", temperature));
                                     weatherStatusText.setText(data.getCurrentSummeryWeather().getCondition().getCondition());
 
-                                    WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density);
+                                    for (int i = 0; i < forecastCount; i++) {
+                                        TextView date = findViewById(forecastDateIds[i]);
+                                        TextView low = findViewById(forecastLowIds[i]);
+                                        TextView high = findViewById(forecastHighIds[i]);
+                                        ImageView forecastCondition = findViewById(forecastImageIds[i]);
+
+                                        date.setText(data.getWeatherForecast().getWeatherDay().get(i).getDate());
+                                        float minTemperature = data.getWeatherForecast().getWeatherDay().get(i).getWeather().getMinTemperature();
+                                        float maxTemperature = data.getWeatherForecast().getWeatherDay().get(i).getWeather().getMaxTemperature();
+                                        String minTempStr = String.format("%.1f°", minTemperature);
+                                        String maxTempStr = String.format("%.1f°", maxTemperature);
+                                        low.setText(minTempStr);
+                                        high.setText(maxTempStr);
+
+                                        WeatherIconTask iconTask = new WeatherIconTask(forecastCondition, getResources().getDisplayMetrics().density, 64);
+                                        String iconUrl = "http:" + data.getWeatherForecast().getWeatherDay().get(i).getWeather().getCondition().getConditionIconLink();
+                                        iconTask.execute(iconUrl);
+                                    }
+
+                                    WeatherIconTask iconTask = new WeatherIconTask(conditionIcon, getResources().getDisplayMetrics().density, 64);
                                     String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
                                     iconTask.execute(iconUrl);
                                 }
