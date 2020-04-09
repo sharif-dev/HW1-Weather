@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
-                WeatherData.getInstance().getWeatherData(
+                WeatherData.getInstance().loadWeatherData(
                         cities.get(0),
                         getString(R.string.weather_api),
                         getString(R.string.weather_token),
