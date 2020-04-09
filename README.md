@@ -1,6 +1,6 @@
 # Weather Application
 
-mobile_dev course - Home Work 1 [document](https://github.com/sharif-dev/HW1-Weather/raw/master/Mobile_HW1.pdf)
+mobile_dev course - Home Work 1 [document](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/Mobile_HW1.pdf)
 
 ### Team Members:
 |        Name        | Student Number |
