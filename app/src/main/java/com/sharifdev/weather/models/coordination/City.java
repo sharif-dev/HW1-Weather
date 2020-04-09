@@ -48,7 +48,7 @@ public class City {
         if (!(obj instanceof String)){
             return false;
         }
-        return this.name.equals(obj.toString());
+        return this.getCountry().equals(obj.toString());
     }
 
 }

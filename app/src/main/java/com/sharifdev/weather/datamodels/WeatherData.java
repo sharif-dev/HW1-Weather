@@ -3,6 +3,8 @@ package com.sharifdev.weather.datamodels;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sharifdev.weather.R;
 import com.sharifdev.weather.asynctasks.LoadWeatherTask;
 import com.sharifdev.weather.asynctasks.SaveWeatherTask;
@@ -28,7 +30,7 @@ public class WeatherData {
     private static WeatherData instance = new WeatherData();
     private WeatherResponse weather;
     private Context context;
-    String TAG = "Weather Data";
+    private static final String TAG = "WeatherData";
     private final int OLDNESS_HOUR_CONST = 1;
 
     private WeatherData() {
@@ -44,11 +46,15 @@ public class WeatherData {
 
         try {
             WeatherResponse weatherResponse = loadWeather(callback);
-            if (city.equals(weatherResponse.getLocation().getName())) {
+            Log.v(TAG, weatherResponse.getLocation().getCounty() + " / " + city.getCountry());
+            if (city.equals(weatherResponse.getLocation().getCounty())) {
                 callback.onComplete(weatherResponse);
+                Log.d(TAG, "Weather data used from file.");
                 return;
             }
         } catch (DataNotUpdateException ignored) { }
+
+        Log.d(TAG, "Requesting updated data from api ...");
 
         if(internetConnection) {
             final RetrofitClient weatherClient = new RetrofitClient(weatherAPI);
@@ -70,6 +76,7 @@ public class WeatherData {
                         return;
                     }
                     callback.onComplete(response.body());
+                    instance.saveWeather(response.body());
                 }
 
                 @Override
@@ -88,23 +95,24 @@ public class WeatherData {
         // check if previous data exists for this city
         LoadWeatherTask loadWeatherTask = new LoadWeatherTask(this.context, callback);
         String lastSavedDataTime ;
+        String lastCity;
         try {
             // try for reading last saved data
             weatherResponse = loadWeatherTask.execute().get();
             lastSavedDataTime = weatherResponse.getCurrentSummeryWeather().getLastUpdated();
+            lastCity = weatherResponse.getLocation().getName();
         } catch (ExecutionException | InterruptedException | NullPointerException e) {
             // data not found
             Log.d(TAG, "Weather data file is not saved yet.");
             e.printStackTrace();
             throw  new DataNotUpdateException();
         }
-        Log.i(TAG, "last updated is time " + lastSavedDataTime);
+        Log.i(TAG, "last updated is for city " + lastCity + " in time " + lastSavedDataTime);
         // check if data is update
         if (isTooOld(lastSavedDataTime)) {
             Log.d(TAG, "Weather data file was too old to use again.");
             throw  new DataNotUpdateException();
         }
-        Log.d(TAG, "Weather data used from file.");
         return weatherResponse;
     }
 
@@ -116,6 +124,8 @@ public class WeatherData {
         try {
             Date lastUpdateTime = simpleDateFormatter.parse(lastSavedDataTime);
             Date now = Calendar.getInstance().getTime();
+
+            // Unit is hour
             int diffhours = (int) ((lastUpdateTime.getTime() - now.getTime()) / (60 * 60 * 1000));
 
             // check if last update is too old

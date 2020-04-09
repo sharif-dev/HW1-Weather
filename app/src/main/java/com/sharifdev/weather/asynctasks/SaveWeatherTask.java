@@ -3,6 +3,7 @@ package com.sharifdev.weather.asynctasks;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sharifdev.weather.R;
@@ -14,6 +15,9 @@ import java.io.IOException;
 
 
 public class SaveWeatherTask extends AsyncTask<WeatherResponse, Void, Integer> {
+
+    private static final  String TAG = "SaveWeatherTask";
+
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
@@ -34,6 +38,7 @@ public class SaveWeatherTask extends AsyncTask<WeatherResponse, Void, Integer> {
             outputStream.write(json.getBytes());
             outputStream.close();
         } catch (IOException e) {
+            Log.e(TAG,"File write occurred");
             e.printStackTrace();
         }
         return 200;
