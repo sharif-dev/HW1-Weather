@@ -33,24 +33,28 @@ public class WeatherData {
     public void getWeatherData(City city, String weatherAPI, String apiToken, final WeatherDataCallback callback) {
         boolean internetConnection = InternetConnectionChecker.checkConnection(context);
 
-        final RetrofitClient weatherClient = new RetrofitClient(weatherAPI);
-        final WeatherAPI service = weatherClient.getRetrofit().create(WeatherAPI.class);
+        loadWeather(callback);//TODO: add whatever it needs
 
-        Call<WeatherResponse> call = service.getWeather(
-                city.getCoordinates(),
-                apiToken);
+        if(internetConnection) {
+            final RetrofitClient weatherClient = new RetrofitClient(weatherAPI);
+            final WeatherAPI service = weatherClient.getRetrofit().create(WeatherAPI.class);
 
-        call.enqueue(new Callback<WeatherResponse>() {
-            @Override
-            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-                callback.onComplete(response.body());
-            }
+            Call<WeatherResponse> call = service.getWeather(
+                    city.getCoordinates(),
+                    apiToken);
 
-            @Override
-            public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                callback.onFailure(t);
-            }
-        });
+            call.enqueue(new Callback<WeatherResponse>() {
+                @Override
+                public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                    callback.onComplete(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                    callback.onFailure(t);
+                }
+            });
+        }
         ArrayList<City> cities = new ArrayList<>();
     }
 
