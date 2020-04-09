@@ -1,10 +1,13 @@
 package com.sharifdev.weather;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,26 +24,25 @@ import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 import com.sharifdev.weather.network.InternetConnectionChecker;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
-    Calendar calendar = Calendar.getInstance();
     ImageView conditionIcon;
     TextView temperatureText;
     TextView textCity;
     TextView dateText;
     TextView weatherStatusText;
+    ProgressBar progressBar;
+    View content;
     City city;
     int[] forecastImageIds;
     int[] forecastLowIds;
     int[] forecastDateIds;
     int[] forecastHighIds;
     int forecastCount = 5;
+    int shortAnimationDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         textCity = findViewById(R.id.text_city);
         dateText = findViewById(R.id.text_date);
         weatherStatusText = findViewById(R.id.weather_status);
+        content = findViewById(R.id.content);
+        progressBar = findViewById(R.id.progress_bar);
+        shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
 
         forecastImageIds = new int[]{
                 R.id.forecast_condition_0,
@@ -104,12 +110,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Date now = calendar.getTime();
-        String pattern = "EEE, MMM d HH:mm";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String date = simpleDateFormat.format(now);
-        dateText.setText(date);
-
         refresh();
     }
 
@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refresh() {
+        content.setVisibility(View.GONE);
+
         CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
             @Override
             public void onComplete(List<City> cities) {
@@ -164,6 +166,25 @@ public class MainActivity extends AppCompatActivity {
                                     String iconUrl = "http:" + data.getCurrentSummeryWeather().getCondition().getConditionIconLink();
                                     iconTask.execute(iconUrl);
                                     WeatherData.getInstance(getApplicationContext()).saveWeather(data);
+
+                                    content.setAlpha(0f);
+                                    content.setVisibility(View.VISIBLE);
+
+                                    content.animate()
+                                            .alpha(1f)
+                                            .setDuration(shortAnimationDuration)
+                                            .setListener(null);
+
+                                    progressBar.animate()
+                                            .alpha(0f)
+                                            .setDuration(shortAnimationDuration)
+                                            .setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    progressBar.setVisibility(View.GONE);
+                                                }
+                                            });
+
                                 }
 
                                 @Override
