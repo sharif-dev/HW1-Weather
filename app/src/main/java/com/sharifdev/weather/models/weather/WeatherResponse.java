@@ -14,6 +14,14 @@ public class WeatherResponse {
         return location;
     }
 
+    public WeatherForecast getWeatherForecast() {
+        return weatherForecast;
+    }
+
+    public void setWeatherForecast(WeatherForecast weatherForecast) {
+        this.weatherForecast = weatherForecast;
+    }
+
     public void setLocation(Location location) {
         this.location = location;
     }

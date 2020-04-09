@@ -2,7 +2,7 @@ package com.sharifdev.weather.models.weather;
 
 import com.google.gson.annotations.SerializedName;
 
-class Weather {
+public class Weather {
     @SerializedName("maxtemp_c")
     private float maxTemperature;
     @SerializedName("mintemp_c")
