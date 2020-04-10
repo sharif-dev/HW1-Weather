@@ -8,7 +8,3 @@ mobile_dev course - Home Work 1 [document](https://github.com/sharif-dev/HW1-Wea
 |   MohammadHosein Bahmani  |    97105811    |
 | Mohammadamin Ghasemzade |    97110296    |
 |    Ali Shirmohammadi   |    97106068    |
-
-![screen shot 1](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/1.jpg)<!-- .element height="455px" width="210px" -->
-![screen shot 2](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/2.jpg)<!-- .element height="455px" width="210px" -->
-![screen shot 3](https://github.com/sharif-dev/HW1-Weather/raw/master/demo/3.jpg)<!-- .element height="455px" width="210px" -->
