@@ -1,5 +1,6 @@
 package com.sharifdev.weather;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -45,6 +46,7 @@ public class    LocationActivity extends AppCompatActivity {
         searchResultListView.setAdapter(adapter);
 
         CityData.getInstance(getApplicationContext()).loadCity(new CityDataCallback() {
+            @SuppressLint({"DefaultLocale", "SetTextI18n"})
             @Override
             public void onComplete(List<City> cities) {
                 City city = cities.get(0);
@@ -53,7 +55,7 @@ public class    LocationActivity extends AppCompatActivity {
                     latitude.setText(String.format("Latitude: %.2f, ", city.getCoordinates().get(1)));
                     longitude.setText(String.format("Longitude: %.2f, ", city.getCoordinates().get(0)));
                 } else {
-                    currentCity.setText("[ SELECT A CITY ]");
+                    currentCity.setText(R.string.select_city_hint);
                     latitude.setText("");
                     longitude.setText("");
                 }

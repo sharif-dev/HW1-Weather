@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sharifdev.weather.R;
-import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 
 import java.io.FileOutputStream;

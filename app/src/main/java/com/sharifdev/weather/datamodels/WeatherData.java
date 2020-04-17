@@ -1,5 +1,6 @@
 package com.sharifdev.weather.datamodels;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WeatherData {
+    @SuppressLint("StaticFieldLeak")
     private static WeatherData instance = new WeatherData();
     private WeatherResponse weather;
     private Context context;
@@ -52,11 +54,12 @@ public class WeatherData {
                 Log.d(TAG, "Weather data used from file.");
                 return;
             }
-        } catch (DataNotUpdateException ignored) { }
+        } catch (DataNotUpdateException ignored) {
+        }
 
         Log.d(TAG, "Requesting updated data from api ...");
 
-        if(internetConnection) {
+        if (internetConnection) {
             final RetrofitClient weatherClient = new RetrofitClient(weatherAPI);
             final WeatherAPI service = weatherClient.getRetrofit().create(WeatherAPI.class);
 
@@ -88,13 +91,13 @@ public class WeatherData {
         ArrayList<City> cities = new ArrayList<>();
     }
 
-    public WeatherResponse loadWeather(WeatherDataCallback callback) throws DataNotUpdateException {
+    private WeatherResponse loadWeather(WeatherDataCallback callback) throws DataNotUpdateException {
 
         WeatherResponse weatherResponse = null;
 
         // check if previous data exists for this city
         LoadWeatherTask loadWeatherTask = new LoadWeatherTask(this.context, callback);
-        String lastSavedDataTime ;
+        String lastSavedDataTime;
         String lastCity;
         try {
             // try for reading last saved data
@@ -105,13 +108,13 @@ public class WeatherData {
             // data not found
             Log.d(TAG, "Weather data file is not saved yet.");
             e.printStackTrace();
-            throw  new DataNotUpdateException();
+            throw new DataNotUpdateException();
         }
         Log.i(TAG, "last updated is for city " + lastCity + " in time " + lastSavedDataTime);
         // check if data is update
         if (isTooOld(lastSavedDataTime)) {
             Log.d(TAG, "Weather data file was too old to use again.");
-            throw  new DataNotUpdateException();
+            throw new DataNotUpdateException();
         }
         return weatherResponse;
     }
@@ -120,30 +123,33 @@ public class WeatherData {
 
         // format the string of time
         String format = "yyyy-MM-dd hh:mm";
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormatter = new SimpleDateFormat(format);
         try {
             Date lastUpdateTime = simpleDateFormatter.parse(lastSavedDataTime);
             Date now = Calendar.getInstance().getTime();
 
             // Unit is hour
+            assert lastUpdateTime != null;
             int diffhours = (int) ((lastUpdateTime.getTime() - now.getTime()) / (60 * 60 * 1000));
 
             // check if last update is too old
             if (diffhours > OLDNESS_HOUR_CONST) {
                 return true;
             }
-        } catch (ParseException ignored) { }
+        } catch (ParseException ignored) {
+        }
         return false;
 
     }
 
-    public void saveWeather(WeatherResponse weather) {
+    private void saveWeather(WeatherResponse weather) {
         SaveWeatherTask saveWeatherTask = new SaveWeatherTask(this.context);
         saveWeatherTask.execute(weather);
     }
 
-    class DataNotUpdateException extends Exception {
-        public DataNotUpdateException() {
+    static class DataNotUpdateException extends Exception {
+        DataNotUpdateException() {
             super("Last saved data is not updated.");
         }
     }
