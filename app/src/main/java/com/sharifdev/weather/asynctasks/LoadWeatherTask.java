@@ -10,7 +10,6 @@ import com.sharifdev.weather.datamodels.WeatherDataCallback;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -42,11 +41,17 @@ public class LoadWeatherTask extends AsyncTask<Void, Void, WeatherResponse> {
             inputStreamReader.close();
             bufferedReader.close();
             String json = stringBuilder.toString();
+            System.out.println("file content: " + json);
             Gson gson = new Gson();
             return gson.fromJson(json, WeatherResponse.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(WeatherResponse weatherResponse) {
+        callback.onComplete(weatherResponse);
     }
 }

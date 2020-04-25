@@ -7,11 +7,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sharifdev.weather.R;
-import com.sharifdev.weather.models.coordination.City;
 import com.sharifdev.weather.models.weather.WeatherResponse;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 
 public class SaveWeatherTask extends AsyncTask<WeatherResponse, Void, Integer> {
@@ -30,13 +29,13 @@ public class SaveWeatherTask extends AsyncTask<WeatherResponse, Void, Integer> {
         Gson gson = new Gson();
         WeatherResponse weather = weatherResponses[0];
         String json = gson.toJson(weather);
-        FileOutputStream outputStream;
         try {
-            outputStream = context.getApplicationContext().openFileOutput(
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.getApplicationContext().openFileOutput(
                     context.getString(R.string.weather_file_name),
-                    Context.MODE_PRIVATE);
-            outputStream.write(json.getBytes());
-            outputStream.close();
+                    Context.MODE_PRIVATE));
+            outputStreamWriter.write(json);
+            System.out.println(json);
+            outputStreamWriter.close();
         } catch (IOException e) {
             Log.e(TAG,"File write occurred");
             e.printStackTrace();
